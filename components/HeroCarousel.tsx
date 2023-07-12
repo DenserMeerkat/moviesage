@@ -2,10 +2,8 @@
 import React from "react";
 import Carousel from "react-multi-carousel";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { useMediaQuery } from "react-responsive";
 
 const HeroCarousel = () => {
-  const isNonMobile = useMediaQuery({ minWidth: 768 });
   const list = [1, 2, 3, 4, 5];
   const responsive = {
     desktop: {
@@ -42,10 +40,10 @@ const HeroCarousel = () => {
           className="z-0"
           swipeable={true}
           draggable={true}
-          showDots={isNonMobile ? false : true}
+          showDots={false}
           autoPlay={true}
           responsive={responsive}
-          infinite={false}
+          infinite={true}
           removeArrowOnDeviceType={["tablet", "mobile"]}
           renderButtonGroupOutside={true}
         >
