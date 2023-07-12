@@ -1,6 +1,8 @@
+"use client";
 import React from "react";
 import { Search, Command } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 const SearchBox = () => {
   const [openSearch, setSearchOpen] = useState(false);
@@ -17,9 +19,10 @@ const SearchBox = () => {
     }
   }
   return (
-    <button
+    <Button
+      variant={"ghost"}
       className={
-        " md:w-64 xl:w-72 px-2 h-10 rounded-md cursor-pointer border hover:border-zinc-500 flex items-center justify-between"
+        " md:w-64 xl:w-72 px-2 h-10 rounded-md cursor-pointer sm:border sm:hover:border-zinc-500 flex items-center justify-between"
       }
       onClick={() => setSearchOpen((prev) => !prev)}
     >
@@ -33,8 +36,7 @@ const SearchBox = () => {
         <Command className="p-1.5" />
         <p className="text-xs">k</p>
       </div>
-    </button>
+    </Button>
   );
 };
-
 export default SearchBox;

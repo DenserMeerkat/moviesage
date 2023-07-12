@@ -3,17 +3,17 @@ import ThemeSwitcher from "./elements/ThemeSwitcher";
 import GitHubLink from "./elements/Github";
 import Login from "./elements/Login";
 import SearchBox from "./elements/SearchBox";
-import { useMediaQuery } from "react-responsive";
 
 const Tray = () => {
-  const isNonMobile = useMediaQuery({ minWidth: 600 });
   return (
-    <div className={"flex gap-0.5 md:gap-1 items-center"}>
+    <div
+      className={
+        "flex gap-0.5 min-[400px]:gap-1 sm:gap-1.5 lg:gap-2 items-center"
+      }
+    >
       <SearchBox />
-      <div className="md:mx-1" />
-      {isNonMobile && <GitHubLink />}
+      <GitHubLink />
       <ThemeSwitcher />
-      <div className="md:mx-1" />
       <Login />
     </div>
   );
