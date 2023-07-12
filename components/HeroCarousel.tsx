@@ -51,7 +51,7 @@ const HeroCarousel = () => {
             <div
               key={index}
               className=" aspect-video flex items-center justify-center
-               bg-zinc-300 dark:bg-zinc-800 overflow-clip"
+               border bg-zinc-100 dark:bg-zinc-800 overflow-clip"
             >
               <p className="text-8xl opacity-5 select-none">{item}</p>
             </div>
@@ -73,7 +73,7 @@ const CarouselThumbs = (props: any) => {
       {slides.map((slide: any, index: number) => (
         <div
           key={index}
-          className={`w-48 mr-2 md:w-full bg-slate-300 dark:bg-slate-500/[0.3] md:mb-3 rounded-sm`}
+          className={`w-48 mr-2 md:w-full border bg-slate-100 dark:bg-slate-500/[0.3] md:mb-3 rounded-sm`}
           onClick={() => onClick(index)}
         >
           <AspectRatio
