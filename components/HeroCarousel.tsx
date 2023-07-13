@@ -42,10 +42,15 @@ const HeroCarousel = () => {
       setTimeout(() => {
         if (carouselRef.current) {
           carouselRef.current.goToSlide(0, false);
-          setActiveSlide(0);
         }
-      }, 3000);
+      }, 2500);
     }
+  };
+  const handleBeforeChange = (
+    nextSlide: number,
+    { currentSlide }: { currentSlide: number }
+  ) => {
+    setActiveSlide(nextSlide);
   };
   return (
     <div className="px-0 py-0 md:py-4 md:px-6 mb-4 md:mb-8 max-w-7xl mx-auto flex flex-col-reverse md:flex-row justify-center gap-4 ">
@@ -60,13 +65,15 @@ const HeroCarousel = () => {
           ref={carouselRef}
           className="z-0"
           ssr={true}
-          swipeable={false}
+          swipeable={true}
           draggable={true}
           autoPlay={true}
-          showDots={isMobile ? true : false}
+          showDots={true}
+          autoPlaySpeed={2500}
           customDot={<CustomDot />}
           responsive={responsive}
           afterChange={handleAfterChange}
+          beforeChange={handleBeforeChange}
           shouldResetAutoplay={true}
           removeArrowOnDeviceType={["tablet", "mobile"]}
           renderButtonGroupOutside={true}

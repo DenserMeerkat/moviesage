@@ -6,8 +6,10 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 const Search = () => {
   const [domLoaded, setDomLoaded] = useState(false);
@@ -38,8 +40,14 @@ const Search = () => {
               onClick={() => setSearchOpen((prev) => !prev)}
             />
           </DialogTrigger>
-          <DialogContent>
-            <DialogHeader></DialogHeader>
+          <DialogContent className="top-12 w-full max-w-3xl max-h-screen">
+            <DialogHeader>
+              <DialogTitle>
+                <div className="mt-6 md:mt-0 flex w-full max-w-2xl items-center gap-1">
+                  <Input type="email" placeholder="Type movie title" />
+                </div>
+              </DialogTitle>
+            </DialogHeader>
           </DialogContent>
         </Dialog>
       )}
