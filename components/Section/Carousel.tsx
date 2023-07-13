@@ -10,33 +10,35 @@ export const MultiCarousel = () => {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 4,
-      slidesToSlide: 1,
+      slidesToSlide: 3,
       partialVisibilityGutter: 20,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 3,
-      slidesToSlide: 1,
+      slidesToSlide: 2,
       partialVisibilityGutter: 10,
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 2,
-      slidesToSlide: 1,
+      slidesToSlide: 2,
       partialVisibilityGutter: 10,
     },
   };
   return (
     <Carousel
       className="z-0"
+      ssr={true}
       swipeable={true}
       draggable={true}
       showDots={false}
       responsive={responsive}
       removeArrowOnDeviceType={["tablet", "mobile"]}
+      transitionDuration={500}
+      customTransition="transform 500ms ease-in-out"
       infinite={false}
-      ssr={true}
-      partialVisbile={true}
+      partialVisible={true}
     >
       {list.map((item: number, index: number) => (
         <CarouselItem key={index} title={item} />

@@ -1,10 +1,14 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import Carousel from "react-multi-carousel";
+import { DotProps } from "react-multi-carousel/lib/types";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+import { useMediaQuery } from "react-responsive";
 
 const HeroCarousel = () => {
-  const list = [1, 2, 3, 4, 5];
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const carouselRef = useRef<Carousel>(null);
+  const list = [0, 1, 2, 3, 4];
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -25,7 +29,23 @@ const HeroCarousel = () => {
   const [activeSlide, setActiveSlide] = React.useState(0);
 
   const handleThumbClick = (index: number) => {
-    setActiveSlide(index);
+    if (carouselRef.current) {
+      carouselRef.current.goToSlide(index);
+      setActiveSlide(index);
+    }
+  };
+  const handleAfterChange = (
+    previousSlide: number,
+    { currentSlide }: { currentSlide: number }
+  ) => {
+    if (currentSlide === list.length - 1) {
+      setTimeout(() => {
+        if (carouselRef.current) {
+          carouselRef.current.goToSlide(0, false);
+          setActiveSlide(0);
+        }
+      }, 3000);
+    }
   };
   return (
     <div className="px-0 py-0 md:py-4 md:px-6 mb-4 md:mb-8 max-w-7xl mx-auto flex flex-col-reverse md:flex-row justify-center gap-4 ">
@@ -37,13 +57,17 @@ const HeroCarousel = () => {
       />
       <div className="md:max-w-[1000px] aspect-video h-full w-full md:w-[80%] lg:w-[75%] xl:w-[70%] md:rounded-sm overflow-clip">
         <Carousel
+          ref={carouselRef}
           className="z-0"
-          swipeable={true}
+          ssr={true}
+          swipeable={false}
           draggable={true}
-          showDots={false}
           autoPlay={true}
+          showDots={isMobile ? true : false}
+          customDot={<CustomDot />}
           responsive={responsive}
-          infinite={true}
+          afterChange={handleAfterChange}
+          shouldResetAutoplay={true}
           removeArrowOnDeviceType={["tablet", "mobile"]}
           renderButtonGroupOutside={true}
         >
@@ -66,6 +90,9 @@ export default HeroCarousel;
 
 const CarouselThumbs = (props: any) => {
   const { className, slides, activeSlide, onClick } = props;
+  const commonTail = `w-48 mr-2 md:w-full border md:mb-3 rounded-sm transition-colors`;
+  const activeTail = `${commonTail} bg-slate-200 dark:bg-slate-400/[0.3]`;
+  const inactiveTail = `${commonTail} bg-slate-100 dark:bg-slate-500/[0.3]`;
   return (
     <div
       className={`${className} hidden md:flex md:flex-col md:h-full items-center`}
@@ -73,7 +100,7 @@ const CarouselThumbs = (props: any) => {
       {slides.map((slide: any, index: number) => (
         <div
           key={index}
-          className={`w-48 mr-2 md:w-full border bg-slate-100 dark:bg-slate-500/[0.3] md:mb-3 rounded-sm`}
+          className={activeSlide === index ? activeTail : inactiveTail}
           onClick={() => onClick(index)}
         >
           <AspectRatio
@@ -85,5 +112,16 @@ const CarouselThumbs = (props: any) => {
         </div>
       ))}
     </div>
+  );
+};
+
+const CustomDot = ({ index, active, onClick, carouselState }: DotProps) => {
+  const activeDotStyles = `w-3 h-2 border rounded-full mx-1 mb-3 bg-zinc-900 dark:bg-zinc-200 transition-all`;
+  const dotStyles = `w-2 h-2 rounded-full mx-1 mb-3 bg-zinc-300 dark:bg-zinc-700 transition-all`;
+  return (
+    <button
+      className={active ? activeDotStyles : dotStyles}
+      onClick={onClick}
+    />
   );
 };

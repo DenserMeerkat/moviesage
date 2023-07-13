@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/dialog";
 
 const Search = () => {
+  const [domLoaded, setDomLoaded] = useState(false);
   const [openSearch, setSearchOpen] = useState(false);
   useEffect(() => {
+    setDomLoaded(true);
     document.addEventListener("keydown", handleKeyPress);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
@@ -24,20 +26,24 @@ const Search = () => {
     }
   }
   return (
-    <Dialog
-      open={openSearch}
-      onOpenChange={() => setSearchOpen((prev) => !prev)}
-    >
-      <DialogTrigger>
-        <SearchBox
+    <>
+      {domLoaded && (
+        <Dialog
           open={openSearch}
-          onClick={() => setSearchOpen((prev) => !prev)}
-        />
-      </DialogTrigger>
-      <DialogContent className="">
-        <DialogHeader></DialogHeader>
-      </DialogContent>
-    </Dialog>
+          onOpenChange={() => setSearchOpen((prev) => !prev)}
+        >
+          <DialogTrigger>
+            <SearchBox
+              open={openSearch}
+              onClick={() => setSearchOpen((prev) => !prev)}
+            />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader></DialogHeader>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 };
 
