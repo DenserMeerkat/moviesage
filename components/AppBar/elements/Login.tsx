@@ -15,8 +15,8 @@ const Login = () => {
       <DropdownMenuTrigger asChild>
         <Button
           size={"sm"}
-          variant={"secondary"}
-          className="h-10 border dark:border-none border-zinc-300 hover:border-zinc-500"
+          variant={"outline"}
+          className="h-10 border border-zinc-300 dark:border-zinc-800 hover:border-zinc-500 "
         >
           <User className="md:mr-2 h-4 w-4" />
           <p className="hidden md:inline pr-1">Login</p>

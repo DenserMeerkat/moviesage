@@ -1,11 +1,15 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Carousel from "react-multi-carousel";
 import { DotProps } from "react-multi-carousel/lib/types";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { useMediaQuery } from "react-responsive";
 
 const HeroCarousel = () => {
+  const [domLoaded, setDomLoaded] = useState(false);
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const carouselRef = useRef<Carousel>(null);
   const list = [0, 1, 2, 3, 4];
@@ -52,45 +56,47 @@ const HeroCarousel = () => {
   ) => {
     setActiveSlide(nextSlide);
   };
-  return (
-    <div className="px-0 py-0 md:py-4 md:px-6 mb-4 md:mb-8 max-w-7xl mx-auto flex flex-col-reverse md:flex-row justify-center gap-4 ">
-      <CarouselThumbs
-        className="md:w-[12%]"
-        slides={list}
-        activeSlide={activeSlide}
-        onClick={handleThumbClick}
-      />
-      <div className="md:max-w-[1000px] aspect-video h-full w-full md:w-[80%] lg:w-[75%] xl:w-[70%] md:rounded-sm overflow-clip">
-        <Carousel
-          ref={carouselRef}
-          className="z-0"
-          ssr={true}
-          swipeable={true}
-          draggable={true}
-          autoPlay={true}
-          showDots={true}
-          autoPlaySpeed={2500}
-          customDot={<CustomDot />}
-          responsive={responsive}
-          afterChange={handleAfterChange}
-          beforeChange={handleBeforeChange}
-          shouldResetAutoplay={true}
-          removeArrowOnDeviceType={["tablet", "mobile"]}
-          renderButtonGroupOutside={true}
-        >
-          {list.map((item: number, index: number) => (
-            <div
-              key={index}
-              className=" aspect-video flex items-center justify-center
+  if (!domLoaded) return null;
+  else
+    return (
+      <div className="px-0 py-0 md:py-4 md:px-6 mb-4 md:mb-8 max-w-7xl mx-auto flex flex-col-reverse md:flex-row justify-center gap-4 ">
+        <CarouselThumbs
+          className="md:w-[12%]"
+          slides={list}
+          activeSlide={activeSlide}
+          onClick={handleThumbClick}
+        />
+        <div className="md:max-w-[1000px] aspect-video h-full w-full md:w-[80%] lg:w-[75%] xl:w-[70%] md:rounded-sm overflow-clip">
+          <Carousel
+            ref={carouselRef}
+            className="z-0"
+            ssr={true}
+            swipeable={true}
+            draggable={true}
+            autoPlay={true}
+            showDots={true}
+            autoPlaySpeed={2500}
+            customDot={<CustomDot />}
+            responsive={responsive}
+            afterChange={handleAfterChange}
+            beforeChange={handleBeforeChange}
+            shouldResetAutoplay={true}
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+            renderButtonGroupOutside={true}
+          >
+            {list.map((item: number, index: number) => (
+              <div
+                key={index}
+                className=" aspect-video flex items-center justify-center
                border bg-zinc-100 dark:bg-zinc-800 overflow-clip"
-            >
-              <p className="text-8xl opacity-5 select-none">{item}</p>
-            </div>
-          ))}
-        </Carousel>
+              >
+                <p className="text-8xl opacity-5 select-none">{item}</p>
+              </div>
+            ))}
+          </Carousel>
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default HeroCarousel;
