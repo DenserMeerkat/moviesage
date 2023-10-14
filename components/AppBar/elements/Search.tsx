@@ -9,9 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { SearchIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import fetchMovies, { Movie, Genre, Keywords } from "@/backend/fetchMovies";
+import { Movie } from "@/types/movie";
 import searchMovies from "@/backend/searchLogic";
 
 const Search = () => {
@@ -22,17 +23,29 @@ const Search = () => {
   const [results, setResults] = useState<Movie[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const fetchedData = await fetchMovies();
-      setMovies(fetchedData);
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch("/api/movies");
+        if (!response.ok) {
+          throw new Error("Failed to fetch movies");
+        }
+        const data = await response.json();
+        setMovies(data);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
     };
-    fetchData();
+    fetchMovies();
     setDomLoaded(true);
     document.addEventListener("keydown", handleKeyPress);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
+
+  useEffect(() => {
+    console.log(movies);
+  }, [movies]);
 
   function handleKeyPress(event: KeyboardEvent) {
     if ((event.ctrlKey || event.metaKey) && event.key === "k") {
@@ -65,12 +78,14 @@ const Search = () => {
               onClick={() => setSearchOpen((prev) => !prev)}
             />
           </DialogTrigger>
-          <DialogContent className="w-full max-w-3xl max-h-screen">
+          <DialogContent className="w-full max-w-2xl max-h-screen p-1">
             <DialogHeader>
               <DialogTitle>
                 <div className="mt-6 md:mt-0 flex w-full max-w-2xl items-center gap-1">
+                  <SearchIcon className="h-5 w-5 ml-3" />
                   <Input
-                    type="email"
+                    className="border-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:ring-offset-transparent focus-visible:ring-transparent"
+                    type="text"
                     placeholder="Type movie title"
                     onChange={handleInputChange}
                   />
